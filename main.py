@@ -7,7 +7,7 @@ from time import sleep
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from urllib.parse import urlencode
-
+import re
 
 # Classe para gerenciar a configuração do projeto
 class ConfigManager:
@@ -25,28 +25,38 @@ class NYTimesScraper:
         self.config = config
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
+        
+        #options.add_argument("--headless")  # Rodar sem interface gráfica
+        #options.add_argument("--no-sandbox")  # Necessário para rodar no Docker
+        #options.add_argument("--disable-dev-shm-usage")  # Evita problemas de memória
+
         self.driver = webdriver.Chrome(options=options)
     
     def search_news(self):
-        url = "https://www.nytimes.com/search"
+        url = self.config.get("url")
         attempts = 0
         max_attempts = 3
         news_list = []
-        
+        regexDollars = r"(?:US\$|\$)\s?\d{1,3}(\.\d{3})*(,\d{1,2})?|(?<!\S)\d{1,3}(\.\d{3})*(,\d{1,2})?\s+dollars"
+        regexDate = r"\b\d{4}[-/]\d{2}[-/]\d{2}\b"
 
-        startDate = datetime.now() - relativedelta(months=self.config.get("meses")-1)
+        if self.config.get("meses") > 0:
+            startDate = datetime.now() - relativedelta(months=self.config.get("meses")-1)
+        else:
+            startDate = datetime.now() - relativedelta(months=self.config.get("meses"))
 
         startDate = datetime(startDate.year, startDate.month, 1)
         startDate =  startDate.strftime("%Y-%m-%d")
         endDate = datetime.now().strftime("%Y-%m-%d")
 
        
-        params = {"query":self.config.get("frase"), "startDate": startDate, "endDate": endDate,"lang":"en",  "types":"", "sections":"", "sort": "newest"}
+        params = {"query":self.config.get("frase"), "startDate": startDate, "endDate": endDate,
+                  "lang":self.config.get("idioma"),  "types":self.config.get("tipo"), 
+                  "sections":self.config.get("secao"), "sort": self.config.get("ordenacao")}
+        
         url = f"{url}?{urlencode(params)}"
         print(url)  
 
-
-    #  https://www.nytimes.com/search?dropmab=false&endDate=2025-02-28&lang=en&query=Technology%20Review&sort=newest&startDate=2024-12-01
 
         while attempts < max_attempts:
             try:
@@ -66,16 +76,7 @@ class NYTimesScraper:
                 
                 sleep(2)
                 
-            #    search_box = self.driver.find_element(By.ID, "searchTextField")
-               # search_box.send_keys(self.config.get("frase"))
-            #    search_box.send_keys(Keys.RETURN)
-            #    sleep(5)
-                
-
-              #  date_range = self.driver.find_element(By.XPATH, "//span[text()='Date Range']")
-              #  date_range.click()
-#
-
+                # Expandindo as páginas de resultados encontrados
                 while self.driver.find_elements(By.XPATH, "//button[text()='Show More']"):
                     input_box = self.driver.find_element(By.XPATH, "//button[text()='Show More']")
                     input_box.click()
@@ -86,13 +87,27 @@ class NYTimesScraper:
                 for article in articles:
                     try:
                         title = article.find_element(By.CSS_SELECTOR, "h4").text
-                        #date = article.find_element(By.CSS_SELECTOR, "span.css-17ubb9w").text
-                     #   description = article.find_element(By.CSS_SELECTOR, "p").text if article.find_elements(By.CSS_SELECTOR, "p") else ""
+                        date = article.find_element(By.CSS_SELECTOR, "a").get_attribute("href")
+                        image = article.find_element(By.CLASS_NAME, "css-rq4mmj").get_attribute("src") if article.find_elements(By.CLASS_NAME, "css-rq4mmj") else ""
+                        description = article.find_element(By.CLASS_NAME, "css-e5tzus").text if article.find_elements(By.CLASS_NAME, "css-e5tzus") else ""
                         
+
+                        # Extraindo data do link da notícia
+                        date = re.search(regexDate, date)
+
+                        # Encontrar todas as correspondências de valores monetários dollars na "descrição" e no "título" da notícia
+                        matchesMoney = bool(re.search(regexDollars, title)) if bool(re.search(regexDollars, title)) else bool(re.search(regexDollars, description))
+
+                        # Conta quantas vezes a frase aparece no texto, ignorando maiúsculas e minúsculas
+                        ocorrencias = title.lower().count(self.config.get("frase").lower()) + description.lower().count(self.config.get("frase").lower()) 
+
                         news_list.append({
-                            "Título": title
-                       #     "Data": date,
-                        #    "Descrição": description
+                            "Título": title,
+                            "Data": date[0],
+                            "Descrição": description,
+                            "Imagem": image,
+                            "Número de Ocorrência": ocorrencias,
+                            "Valor Monetário": matchesMoney
                         })
                     except:
                         continue
@@ -101,11 +116,20 @@ class NYTimesScraper:
                     break
             except Exception as e:
                 print(f"Tentativa {attempts + 1} falhou: {e}")
+                self.save_screenshot(f"error_attempt_{attempts + 1}.png")
                 attempts += 1
                 sleep(5)
         
         self.driver.quit()
         return news_list
+
+
+    def save_screenshot(self, filename):
+            try:
+                self.driver.save_screenshot(filename)
+                print(f"Screenshot salva: {filename}")
+            except Exception as e:
+                print(f"Erro ao salvar screenshot: {e}")
 
 # Classe para gerenciar o armazenamento dos dados
 class DataStorage:

@@ -1,5 +1,10 @@
 {
-    "frase": "technology",
+    "url": "https://www.nytimes.com/search",
+    "frase": "trump",
     "categoria": "",
-    "meses": 1
+    "meses": 1,
+    "idioma": "en",
+    "tipo": "",
+    "secao": "",
+    "ordenacao":"newest"
 }
