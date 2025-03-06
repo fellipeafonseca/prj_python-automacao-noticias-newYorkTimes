@@ -1,6 +1,6 @@
-NYTimes Scraper - Automação RPA com ReFramework, Docker e WSL2
+# NYTimes Scraper - Automação RPA com ReFramework, Docker e WSL2
 
-📌 Descrição
+## 📌 Descrição
 
 Este projeto é uma automação RPA desenvolvida em Python seguindo o padrão ReFramework, utilizando Selenium para extrair notícias do site The New York Times.
 
