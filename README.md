@@ -9,6 +9,11 @@ Os dados extraídos são:
 - **Título da notícia**
 - **Data da publicação**
 - **Descrição** (se disponível)
+- **Imagem da Publicação**
+- ** Contagem de Ocorrências da frase de busca na notícia (título e descrição)
+- ** Valor monetário (Dollars) na notícia (Verdadeiro/Falso)
+![image](https://github.com/user-attachments/assets/134b8628-fefe-4973-b33c-d5449d39afbf)
+
 
 As notícias são salvas em um arquivo **Excel** (`noticias.xlsx`) e, em caso de erro durante a extração, uma captura de tela é salva para análise.
 
@@ -65,9 +70,13 @@ Abra o arquivo `config.json` e edite os valores conforme necessário:
 
 ```json
 {
-    "frase": "inteligência artificial",
-    "categoria": "technology",
-    "meses": 3
+    "url": "https://www.nytimes.com/search",
+    "frase": "trump",
+    "meses": 1,
+    "idioma": "en",
+    "tipo": "",
+    "secao": "",
+    "ordenacao":"newest"
 }
 ```
 
