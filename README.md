@@ -19,7 +19,15 @@ As notícias são salvas e é gerado um arquivo **Excel** (`noticias.xlsx`) na r
 
 ## 📽️ Demonstração
 
+### Execução Local
 > https://github.com/user-attachments/assets/0f0aabd1-167c-44f6-a622-b688aea25be8
+
+### Relatório gerado
+![Relatorio Excel](https://github.com/user-attachments/assets/07ee2c78-ac0a-446b-86ae-b223e2c54578)
+
+
+### Execução via docker
+![image](https://github.com/user-attachments/assets/7f470fd7-6610-4582-b8fc-90dc4470e6ad)
 
 
 ---
@@ -97,7 +105,7 @@ python main.py
 
 ---
 
-## 🐳 Uso com Docker
+## 🐳 Uso com Docker - https://hub.docker.com/repository/docker/fellipedockerfon/prj_python-automacao-noticias-newyorktimes-nytimes_scraper/general
 
 ### 🔹 **1. Construir a Imagem Docker**
 
