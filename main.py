@@ -26,7 +26,8 @@ class NYTimesScraper:
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
         
-        #options.add_argument("--headless")  # Rodar sem interface gráfica
+    
+       #options.add_argument("--headless")  # Rodar sem interface gráfica
         #options.add_argument("--no-sandbox")  # Necessário para rodar no Docker
         #options.add_argument("--disable-dev-shm-usage")  # Evita problemas de memória
 
@@ -52,9 +53,11 @@ class NYTimesScraper:
        
         params = {"query":self.config.get("frase"), "startDate": startDate, "endDate": endDate,
                   "lang":self.config.get("idioma"),  "types":self.config.get("tipo"), 
-                  "sections":self.config.get("secao"), "sort": self.config.get("ordenacao")}
+                  "sort": self.config.get("ordenacao")}
         
         url = f"{url}?{urlencode(params)}"
+         
+      
         print(url)  
 
 
