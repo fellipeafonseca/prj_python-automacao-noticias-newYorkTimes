@@ -1,4 +1,4 @@
-# NYTimes Scraper - Automação RPA com ReFramework, Docker e WSL2
+# NYTimes - Automação RPA com ReFramework, Docker e WSL2 para coleta de notícias
 
 ## 📌 Descrição
 
