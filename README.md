@@ -80,12 +80,11 @@ Abra o arquivo `config.json` e edite os valores conforme necessário:
 
 ```json
 {
-    "url": "https://www.nytimes.com/search",
-    "frase": "trump",
+   "url": "https://www.nytimes.com/search",
+    "frase": "technology", 
     "meses": 1,
     "idioma": "en",
-    "tipo": "",
-    "secao": "",
+    "tipo": "article",
     "ordenacao":"newest"
 }
 ```
