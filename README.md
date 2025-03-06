@@ -65,7 +65,7 @@ git clone https://github.com/fellipeafonseca/prj_python-automacao-noticias-newYo
 
 ```
 
-### 🔹 **3. Configurar as Variáveis no Config **
+### 🔹 **3. Configurar as Variáveis no Config**
 
 Abra o arquivo `config.json` e edite os valores conforme necessário:
 
@@ -114,15 +114,15 @@ docker run --rm -v $(pwd)/output:/app/output prj_python-automacao-noticias-newyo
 ### 🔹 **3. Enviar a Imagem para o Docker Hub**
 
 ```bash
-docker tag nytimes_scraper meuusuario/nytimes_scraper:latest
-docker push meuusuario/nytimes_scraper:latest
+docker tag nytimes_scraper fellipedockerfon/prj_python-automacao-noticias-newyorktimes-nytimes_scraper:latest
+docker push fellipedockerfon/prj_python-automacao-noticias-newyorktimes-nytimes_scraper:latest
 ```
 
-### 🔹 **3. Baixar e Executar em Outra Máquina**
+### 🔹 **4. Baixar e Executar em Outra Máquina**
 
 ```bash
-docker pull meuusuario/prj_python-automacao-noticias-newyorktimes-nytimes_scraper:latest
-docker run --rm meuusuario/nytimes_scraper
+docker pull fellipedockerfon/prj_python-automacao-noticias-newyorktimes-nytimes_scraper:latest
+docker run --rm fellipedockerfon/prj_python-automacao-noticias-newyorktimes-nytimes_scraper
 ```
 
 ---
@@ -145,5 +145,5 @@ Melhorias futuras para implementação:
 
 Fique à vontade para abrir um **Pull Request** ou relatar problemas na aba **Issues**!
 
-🔗 **GitHub:** [https://github.com/seu-usuario/NYTimesScraper-RPA](https://github.com/seu-usuario/NYTimesScraper-RPA)
+🔗 **GitHub:** https://github.com/fellipeafonseca/prj_python-automacao-noticias-newYorkTimes
 
