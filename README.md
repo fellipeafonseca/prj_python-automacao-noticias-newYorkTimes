@@ -61,11 +61,11 @@ Antes de rodar a aplicação, certifique-se de ter instalado:
 ### 🔹 **2. Clonar o Repositório**
 
 ```bash
-git clone https://github.com/seu-usuario/NYTimesScraper-RPA.git
-cd NYTimesScraper-RPA
+git clone https://github.com/fellipeafonseca/prj_python-automacao-noticias-newYorkTimes.git
+
 ```
 
-### 🔹 **3. Configurar as Variáveis no **``
+### 🔹 **3. Configurar as Variáveis no Config **
 
 Abra o arquivo `config.json` e edite os valores conforme necessário:
 
@@ -102,13 +102,13 @@ python main.py
 ### 🔹 **1. Construir a Imagem Docker**
 
 ```bash
-docker build -t nytimes_scraper .
+docker build -t prj_python-automacao-noticias-newyorktimes-nytimes_scraper .
 ```
 
 ### 🔹 **2. Executar o Container**
 
 ```bash
-docker run --rm -v $(pwd)/output:/app/output nytimes_scraper
+docker run --rm -v $(pwd)/output:/app/output prj_python-automacao-noticias-newyorktimes-nytimes_scraper
 ```
 
 ### 🔹 **3. Enviar a Imagem para o Docker Hub**
@@ -118,10 +118,10 @@ docker tag nytimes_scraper meuusuario/nytimes_scraper:latest
 docker push meuusuario/nytimes_scraper:latest
 ```
 
-### 🔹 **4. Baixar e Executar em Outra Máquina**
+### 🔹 **3. Baixar e Executar em Outra Máquina**
 
 ```bash
-docker pull meuusuario/nytimes_scraper:latest
+docker pull meuusuario/prj_python-automacao-noticias-newyorktimes-nytimes_scraper:latest
 docker run --rm meuusuario/nytimes_scraper
 ```
 
