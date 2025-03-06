@@ -10,8 +10,8 @@ Os dados extraídos são:
 - **Data da publicação**
 - **Descrição** (se disponível)
 - **Imagem da Publicação**
-- **Contagem de Ocorrências da frase de busca na notícia (título e descrição)
-- **Valor monetário (Dollars) na notícia (Verdadeiro/Falso)
+- **Contagem de Ocorrências da frase de busca na notícia (título e descrição)**
+- **Valor monetário (Dollars) na notícia (Verdadeiro/Falso)**
 
 
 
