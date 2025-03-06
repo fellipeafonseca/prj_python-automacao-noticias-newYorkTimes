@@ -8,14 +8,14 @@ Os dados extraídos são:
 
 - **Título da notícia**
 - **Data da publicação**
-- **Descrição** (se disponível)
+- **Descrição**
 - **Imagem da Publicação**
 - **Contagem de Ocorrências da frase de busca na notícia (título e descrição)**
 - **Valor monetário (Dollars) na notícia (Verdadeiro/Falso)**
 
 
 
-As notícias são salvas em um arquivo **Excel** (`noticias.xlsx`) e, em caso de erro durante a extração, uma captura de tela é salva para análise.
+As notícias são salvas e é gerado um arquivo **Excel** (`noticias.xlsx`) na raiz do projeto com dados extraídos.
 
 ## 📽️ Demonstração
 
@@ -128,13 +128,19 @@ docker run --rm meuusuario/nytimes_scraper
 
 ## 📝 Observações
 
-- Em caso de erro, uma captura de tela será salva na pasta `logs/`.
+- Em caso de erro, uma captura de tela será salva na pasta do projeto.
+- É realizado até 3 tentativas para a extração de dados no site. 
 - Certifique-se de que o **ChromeDriver** está compatível com a versão do Google Chrome instalada.
 - Se o Docker não estiver rodando no **WSL2**, verifique as configurações no **Docker Desktop**.
 
 ---
 
 ## 🏆 Contribuições
+
+Melhorias futuras para implementação:
+- Estruturação melhor do reframework separando as responsabilidades em novas classes;
+- Utilização de imagem de Banco de Dados para salvar os arquivos gerados e/ou Envio por E-mail;
+- Utilização de Docker Secrets para armazenamento de usuário, senha e chaves de conexão no Dockerfile.
 
 Fique à vontade para abrir um **Pull Request** ou relatar problemas na aba **Issues**!
 
