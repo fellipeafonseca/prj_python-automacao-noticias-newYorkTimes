@@ -20,7 +20,8 @@ As notícias são salvas e é gerado um arquivo **Excel** (`noticias.xlsx`) na r
 ## 📽️ Demonstração
 
 ### Execução Local
-> https://github.com/user-attachments/assets/0f0aabd1-167c-44f6-a622-b688aea25be8
+https://github.com/user-attachments/assets/9985e790-60a4-434e-a34a-0e1c4f1fdace
+
 
 ### Relatório gerado
 ![Relatorio Excel](https://github.com/user-attachments/assets/07ee2c78-ac0a-446b-86ae-b223e2c54578)
