@@ -27,9 +27,9 @@ class NYTimesScraper:
         options.add_argument("--start-maximized")
         
     
-       #options.add_argument("--headless")  # Rodar sem interface gráfica
-        #options.add_argument("--no-sandbox")  # Necessário para rodar no Docker
-        #options.add_argument("--disable-dev-shm-usage")  # Evita problemas de memória
+       # options.add_argument("--headless")  # Rodar sem interface gráfica
+       # options.add_argument("--no-sandbox")  # Necessário para rodar no Docker
+       # options.add_argument("--disable-dev-shm-usage")  # Evita problemas de memória
 
         self.driver = webdriver.Chrome(options=options)
     
@@ -85,7 +85,8 @@ class NYTimesScraper:
                     input_box.click()
                     sleep(2)
 
-                articles = self.driver.find_elements(By.CSS_SELECTOR, "li.css-1l4w6pd")
+
+                articles = self.driver.find_elements(By.CLASS_NAME, "css-1l4w6pd")
                 
                 for article in articles:
                     try:
@@ -95,8 +96,15 @@ class NYTimesScraper:
                         description = article.find_element(By.CLASS_NAME, "css-e5tzus").text if article.find_elements(By.CLASS_NAME, "css-e5tzus") else ""
                         
 
+                     
                         # Extraindo data do link da notícia
-                        date = re.search(regexDate, date)
+                        datas = re.search(regexDate, date)
+                        
+                        if datas == None:
+                            print(f"Url/link sem data de publicação: {date} Título: {title}")
+                            date = ""
+                        else:
+                            date = datas[0]
 
                         # Encontrar todas as correspondências de valores monetários dollars na "descrição" e no "título" da notícia
                         matchesMoney = bool(re.search(regexDollars, title)) if bool(re.search(regexDollars, title)) else bool(re.search(regexDollars, description))
@@ -106,13 +114,14 @@ class NYTimesScraper:
 
                         news_list.append({
                             "Título": title,
-                            "Data": date[0],
+                            "Data": date,
                             "Descrição": description,
                             "Imagem": image,
                             "Número de Ocorrência": ocorrencias,
                             "Valor Monetário": matchesMoney
                         })
-                    except:
+                    except Exception as e:
+                        print(f"Erro ao encontrar extrair dados da Notícia: {title} Mensagem: {e}")
                         continue
                 
                 if news_list:
