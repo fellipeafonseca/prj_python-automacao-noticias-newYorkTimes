@@ -28,7 +28,8 @@ https://github.com/user-attachments/assets/9985e790-60a4-434e-a34a-0e1c4f1fdace
 
 
 ### Execução via docker
-![image](https://github.com/user-attachments/assets/7f470fd7-6610-4582-b8fc-90dc4470e6ad)
+
+![Execucao Docker nytimes](https://github.com/user-attachments/assets/b5ad495c-e02a-45a8-84c1-55d9c0aee315)
 
 
 ---
