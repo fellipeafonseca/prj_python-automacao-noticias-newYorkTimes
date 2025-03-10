@@ -1,17 +1,17 @@
-import os
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from time import sleep
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from urllib.parse import urlencode
 import re
+import logging
 
 # Classe para gerenciar a configuração do projeto
 class ConfigManager:
     def __init__(self, config_path="config.json"):
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
         import json
         with open(config_path, "r", encoding="utf-8") as file:
             self.config = json.load(file)
@@ -22,17 +22,24 @@ class ConfigManager:
 # Classe para gerenciar a extração de dados
 class NYTimesScraper:
     def __init__(self, config):
+        
         self.config = config
         options = webdriver.ChromeOptions()
-        options.add_argument("--start-maximized")
+       
+       # options.add_argument("--start-maximized")
         
-    
-       # options.add_argument("--headless")  # Rodar sem interface gráfica
-       # options.add_argument("--no-sandbox")  # Necessário para rodar no Docker
-       # options.add_argument("--disable-dev-shm-usage")  # Evita problemas de memória
-
+        options.add_argument("--no-user-data-dir")     
+        options.add_argument("--headless")  # Rodar sem interface gráfica
+        options.add_argument("--no-sandbox")  # Necessário para rodar no Docker
+        options.add_argument("--disable-dev-shm-usage")  # Evita problemas de memória
+        options.add_argument('--dns-prefetch-disable')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--enable-cdp-events')
+  
         self.driver = webdriver.Chrome(options=options)
     
+
+
     def search_news(self):
         url = self.config.get("url")
         attempts = 0
@@ -57,8 +64,7 @@ class NYTimesScraper:
         
         url = f"{url}?{urlencode(params)}"
          
-      
-        print(url)  
+        logging.info(f"Url de busca: {url}")  
 
 
         while attempts < max_attempts:
@@ -101,7 +107,7 @@ class NYTimesScraper:
                         datas = re.search(regexDate, date)
                         
                         if datas == None:
-                            print(f"Url/link sem data de publicação: {date} Título: {title}")
+                            logging.debug(f"Url/link sem data de publicação: {date} Título: {title}")
                             date = ""
                         else:
                             date = datas[0]
@@ -121,13 +127,13 @@ class NYTimesScraper:
                             "Valor Monetário": matchesMoney
                         })
                     except Exception as e:
-                        print(f"Erro ao encontrar extrair dados da Notícia: {title} Mensagem: {e}")
+                        logging.warning(f"Erro ao encontrar extrair dados da Notícia: {title} Mensagem: {e}")
                         continue
                 
                 if news_list:
                     break
             except Exception as e:
-                print(f"Tentativa {attempts + 1} falhou: {e}")
+                logging.error(f"Tentativa {attempts + 1} falhou: {e}")
                 self.save_screenshot(f"error_attempt_{attempts + 1}.png")
                 attempts += 1
                 sleep(5)
@@ -139,9 +145,9 @@ class NYTimesScraper:
     def save_screenshot(self, filename):
             try:
                 self.driver.save_screenshot(filename)
-                print(f"Screenshot salva: {filename}")
+                logging.info(f"Screenshot salva: {filename}")
             except Exception as e:
-                print(f"Erro ao salvar screenshot: {e}")
+                logging.error(f"Erro ao salvar screenshot: {e}")
 
 # Classe para gerenciar o armazenamento dos dados
 class DataStorage:
@@ -157,13 +163,13 @@ class NYTimesBot:
         self.scraper = NYTimesScraper(self.config_manager)
     
     def run(self):
-        print("Buscando notícias...")
+        logging.info("Buscando notícias...")
         news_data = self.scraper.search_news()
-        print(f"{len(news_data)} notícias encontradas!")
+        logging.info(f"{len(news_data)} notícias encontradas!")
         
-        print("Salvando no Excel...")
+        logging.info("Salvando no Excel...")
         DataStorage.save_to_excel(news_data)
-        print("Processo concluído!")
+        logging.info("Processo concluído!")
 
 if __name__ == "__main__":
     bot = NYTimesBot()

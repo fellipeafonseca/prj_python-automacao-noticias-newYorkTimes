@@ -1,5 +1,10 @@
-# Usar uma imagem oficial do Python
-FROM python:3.9-slim
+# Usar a imagem oficial do Selenium com Chrome
+FROM selenium/standalone-chrome:latest
+
+# Instalar Python e dependências necessárias
+USER root
+RUN apt-get update && apt-get install -y python3-venv python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
 # Definir o diretório de trabalho dentro do container
 WORKDIR /app
@@ -7,13 +12,11 @@ WORKDIR /app
 # Copiar os arquivos do projeto para o container
 COPY . .
 
-# Instalar as dependências do projeto
-RUN pip install --no-cache-dir -r requirements.txt
+# Criar e ativar um ambiente virtual
+RUN python3 -m venv /venv
 
-# Definir o comando padrão para execução
-CMD ["python", "main.py"]
+# Instalar as dependências no ambiente virtual
+RUN /venv/bin/pip install --no-cache-dir -r requirements.txt
 
-# Instalar dependências para o Selenium
-RUN apt-get update && apt-get install -y \
-    chromium-driver \
-    && rm -rf /var/lib/apt/lists/*
+# Definir o comando padrão para execução (ativando o ambiente virtual)
+CMD ["/venv/bin/python", "main.py"]
